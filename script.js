@@ -252,15 +252,15 @@ function famineCalc() {
 }
 
 //Stop Rescources from breaching -1
-function defaultCounter {
+function defaultCounter() {
   if (pop >= 0) {
-  pop = Math.floor(pop - 0);
-  popValue.style.color = "white";
-} else {
-  pop = 0;
-  popValue.style.color = "red";
-}}
-
+    pop = Math.floor(pop - 0);
+    popValue.style.color = "white";
+  } else {
+    pop = 0;
+    popValue.style.color = "red";
+  }
+}
 
 //Family Tree
 //Change how order of family members works
@@ -368,11 +368,13 @@ function kingdomGen() {
 
 //Map Generation
 function mapGen() {
-  let newTileObj = { color: "red", faction: kingdomName };
-  let makeTileSet = document.querySelectorAll(".map-tile");
+  let newTileObj = { color: "blue", faction: kingdomName };
+  let mapTileSet = document.querySelectorAll(".map-tile");
+
+  mapTileSet[0].style.backgroundColor = newTileObj.color;
   //Return kingdom
+  for (let i = 0; i < mapTileSet.length; i++) {}
   mapTiles.push(newTileObj);
-  console.log(mapTileSet);
 }
 
 //Kingdom name grabber
