@@ -10,15 +10,21 @@
     <header>
       <nav>
         <ul>
-          <li><a href="#">Map</a></li>
-          <li><a href="#">Resources</a></li>
-          <li><a href="#">Kings Court</a></li>
-          <li><a href="#">Legacy</a></li>
+          <li><a href="#map">Map</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#court">Kings Court</a></li>
+          <li><a href="#legacy">Legacy</a></li>
         </ul>
       </nav>
     </header>
 
     <main>
+      <div id="name">
+        <form id="form">
+          <input type="text" placeholder="Name Thy Kingdom!" id="name-input" />
+          <input type="submit" />
+        </form>
+      </div>
       <section id="map">
         <div class="map-container">
           <div class="map-tile">
@@ -100,9 +106,23 @@
       </section>
 
       <section id="resources">
-        <h2>Population</h2>
-        <h2>Food</h2>
-        <h2>Mats</h2>
+        <div>
+          <h2 id="pop">Population</h2>
+          <button id="pop-clicker">Add Pop</button>
+
+          <h2 id="soldiers">Soldier</h2>
+          <h2 id="soldiers-cost">Cost</h2>
+          <button id="train-clicker">Train</button>
+        </div>
+        <div>
+          <h2 id="food">Food</h2>
+          <h2 id="food-consumed">Food Consumed</h2>
+          <button id="food-clicker">Add Food</button>
+        </div>
+        <div>
+          <h2 id="mats">Mats</h2>
+          <button id="mats-clicker">Add Mats</button>
+        </div>
       </section>
       <section id="court">
         <h2>Events</h2>

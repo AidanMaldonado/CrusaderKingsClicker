@@ -11,6 +11,12 @@ a {
   font-size: 1.8rem;
 }
 
+button {
+  width: 20vh;
+  height: 18%;
+  font-size: 1.2rem;
+}
+
 /* Header */
 
 header {
@@ -28,6 +34,9 @@ header ul {
 }
 
 /* map */
+#map {
+  background-color: black;
+}
 
 .map-container {
   width: 100%;
@@ -46,4 +55,48 @@ header ul {
   border-radius: 5px;
   width: 96%;
   height: 16vh;
+}
+
+/* Resources */
+#resources,
+#court,
+#legacy {
+  background-color: #e67e22;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  min-height: 35vh;
+}
+
+#resources {
+  background-color: #e67e22;
+}
+
+#court {
+  background-color: #16a085;
+}
+
+#legacy {
+  background-color: #9b59b6;
+}
+
+/* NAME */
+#name {
+  margin: 2rem;
+}
+
+#form {
+  display: flex;
+  justify-content: center;
+}
+
+#name-input {
+  width: 20%;
+  height: 3rem;
+  font-size: 1.4rem;
+}
+
+#form input[type="submit"] {
+  width: 10%;
 }
