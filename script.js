@@ -10,7 +10,8 @@ Map&battle screen/ Resources Screen/ Kings Court/ Family tree
 Population, food, materials
 Can name kingdom -- DONE
 -Cannot name Kings, randomly generated -- DONE
-
+- Decision making function
+- Stop values from going past 0
 some scripted experiences
 random events
 Decided how to determine if king is dead
@@ -45,10 +46,11 @@ const trainButton = document.querySelector("#train-clicker");
 const soldierCostValue = document.querySelector("#soldiers-cost");
 const yearValue = document.querySelector("#year");
 const currentKingValue = document.querySelector("#current-king");
-const courtDisplay = document.querySelector("#court");
+const courtDisplay = document.querySelector("#random-events");
 const familyTreeDiv = document.querySelector(".family-tree");
 
 //Game variables / Starting
+let mapTiles = [];
 let familyTree = [
   {
     name: "Mika",
@@ -57,6 +59,7 @@ let familyTree = [
 ];
 //Index for familytree
 let isTheKingDead = true; //Figure out ways to determine if king is dead
+let kingdomName;
 let currentKing = 0;
 let year = 0;
 let season = 1;
@@ -164,55 +167,68 @@ function displayOtherResources() {
 //Random Event Generator
 function randomEvents() {
   if (pop <= 500) {
-    //Display type of disaster
-    let disasterDisplay = randomEvent[0].name;
-    const h1 = document.createElement("h1");
-    h1.innerHTML = `${disasterDisplay}`;
-    courtDisplay.appendChild(h1);
-    //Numbers
-    pop -= randomEvent[0].popHit;
-    food -= randomEvent[0].foodHit;
-    mats -= randomEvent[0].matsHit;
-    units -= randomEvent[0].unitHit;
-  }
-  if (pop <= 2000) {
-    //Display type of disaster
-    let disasterDisplay = randomEvent[1].name;
-    const h1 = document.createElement("h1");
-    h1.innerHTML = `${disasterDisplay}`;
-    courtDisplay.appendChild(h1);
+    let random = Math.floor(Math.random() * 200 + 1);
 
-    //Numbers
-    pop -= randomEvent[1].popHit;
-    food -= randomEvent[1].foodHit;
-    mats -= randomEvent[1].matsHit;
-    units -= randomEvent[1].unitHit;
-  }
-  if (pop <= 4000) {
-    //Display type of disaster
-    let disasterDisplay = randomEvent[2].name;
-    const h1 = document.createElement("h1");
-    h1.innerHTML = `${disasterDisplay}`;
-    courtDisplay.appendChild(h1);
+    if (random >= 198) {
+      //Display type of disaster
+      let disasterDisplay = randomEvent[0].name;
+      const h1 = document.createElement("h1");
+      h1.innerHTML = `${disasterDisplay}`;
+      courtDisplay.appendChild(h1);
+      //Numbers
+      pop -= randomEvent[0].popHit;
+      food -= randomEvent[0].foodHit;
+      mats -= randomEvent[0].matsHit;
+      units -= randomEvent[0].unitHit;
+    }
+  } else if (pop <= 2000) {
+    let random = Math.floor(Math.random() * 100 + 1);
 
-    //Numbers
-    pop -= randomEvent[2].popHit;
-    food -= randomEvent[2].foodHit;
-    mats -= randomEvent[2].matsHit;
-    units -= randomEvent[2].unitHit;
-  }
-  if (pop <= 5000) {
-    //Display type of disaster
-    let disasterDisplay = randomEvent[3].name;
-    const h1 = document.createElement("h1");
-    h1.innerHTML = `${disasterDisplay}`;
-    courtDisplay.appendChild(h1);
+    if (random >= 199) {
+      //Display type of disaster
+      let disasterDisplay = randomEvent[1].name;
+      const h1 = document.createElement("h1");
+      h1.innerHTML = `${disasterDisplay}`;
+      courtDisplay.appendChild(h1);
 
-    //Numbers
-    pop -= randomEvent[3].popHit;
-    food -= randomEvent[3].foodHit;
-    mats -= randomEvent[3].matsHit;
-    units -= randomEvent[3].unitHit1;
+      //Numbers
+      pop -= randomEvent[1].popHit;
+      food -= randomEvent[1].foodHit;
+      mats -= randomEvent[1].matsHit;
+      units -= randomEvent[1].unitHit;
+    }
+  } else if (pop <= 4000) {
+    let random = Math.floor(Math.random() * 100 + 1);
+
+    if (random >= 199) {
+      //Display type of disaster
+      let disasterDisplay = randomEvent[2].name;
+      const h1 = document.createElement("h1");
+      h1.innerHTML = `${disasterDisplay}`;
+      courtDisplay.appendChild(h1);
+
+      //Numbers
+      pop -= randomEvent[2].popHit;
+      food -= randomEvent[2].foodHit;
+      mats -= randomEvent[2].matsHit;
+      units -= randomEvent[2].unitHit;
+    }
+  } else if (pop <= 5000) {
+    let random = Math.floor(Math.random() * 100 + 1);
+
+    if (random >= 198) {
+      //Display type of disaster
+      let disasterDisplay = randomEvent[3].name;
+      const h1 = document.createElement("h1");
+      h1.innerHTML = `${disasterDisplay}`;
+      courtDisplay.appendChild(h1);
+
+      //Numbers
+      pop -= randomEvent[3].popHit;
+      food -= randomEvent[3].foodHit;
+      mats -= randomEvent[3].matsHit;
+      units -= randomEvent[3].unitHit1;
+    }
   }
 }
 
@@ -235,8 +251,21 @@ function famineCalc() {
   }
 }
 
+//Stop Rescources from breaching -1
+function defaultCounter {
+  if (pop >= 0) {
+  pop = Math.floor(pop - 0);
+  popValue.style.color = "white";
+} else {
+  pop = 0;
+  popValue.style.color = "red";
+}}
+
+
 //Family Tree
+//Change how order of family members works
 function displayFamilyTree() {
+  //isTheKingDead = true; //Temp value to display heirarchy
   //Displays current king on top
   currentKingValue.innerText = `King ${familyTree[currentKing].name} - ${familyTree[currentKing].reign}`;
   if (isTheKingDead) {
@@ -280,7 +309,7 @@ function nextHeir() {
     "Wyot",
   ];
 
-  let random = Math.floor(Math.random() * randomName.length + 1);
+  let random = Math.floor(Math.random() * randomName.length);
   let name = randomName[random];
 
   return name;
@@ -308,26 +337,71 @@ function seasonGenerator() {
   yearValue.innerText = `Year: ${year} - ${seasonString} `;
 }
 
-//Event listeners
-//Gets name of kingdom
-form.addEventListener("submit", (event) => {
-  let kingdomName = nameInput.value;
+//Generates random kingdoms
+function kingdomGen() {
+  //Make these array of objects
+  let randomName = [
+    "Kingdom of Rhadia",
+    "Dutchy of Mercia",
+    "County of Wessex",
+    "Kingdom of Lindsey",
+    "Kingdom of Surrey",
+    "Dutchy of Kent",
+    "Dutchy of Bernicia",
+    "Kingdom of Hwicce",
+    "Kingdom of Dublin",
+    "Kingdom of Limerick",
+    "Dutchy of Alba",
+    "County of Umail",
+    "Kingdom of Tara",
+    "Kingdom of East Breifne",
+    "Kingdom of Ailech",
+    "Kingdom of Fer Manach",
+    "Kingdom of Desmond",
+  ];
+
+  let random = Math.floor(Math.random() * randomName.length);
+  let kingdom = randomName[random];
+
+  return kingdom;
+}
+
+//Map Generation
+function mapGen() {
+  let newTileObj = { color: "red", faction: kingdomName };
+  let makeTileSet = document.querySelectorAll(".map-tile");
+  //Return kingdom
+  mapTiles.push(newTileObj);
+  console.log(mapTileSet);
+}
+
+//Kingdom name grabber
+function nameGrabber() {
+  kingdomName = nameInput.value;
   const h1 = document.createElement("h1");
   h1.innerHTML = `${kingdomName}`;
   nameDiv.appendChild(h1);
   form.style.display = "none";
+}
+
+//Event listeners
+//Gets name of kingdom
+form.addEventListener("submit", function (event) {
+  nameGrabber();
+  mapGen();
   event.preventDefault();
 });
 
 //Pop clicker
+//Test values in play
 popButton.addEventListener("click", () => {
-  pop += 5;
+  pop += 50;
   updateUI();
 });
 
 //Food Clicker
 foodButton.addEventListener("click", () => {
-  food += 5;
+  food += 50;
   updateUI();
 });
 
@@ -350,6 +424,7 @@ window.setInterval(function () {
   famineCalc();
   seasonGenerator();
   displayFamilyTree();
+  randomEvents();
   updateUI();
 }, 2500);
 
