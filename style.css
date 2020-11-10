@@ -77,8 +77,22 @@ header ul {
   background-color: #16a085;
 }
 
+/*Legacy */
+
 #legacy {
   background-color: #9b59b6;
+}
+
+#legacy div {
+  width: 50%;
+  text-align: center;
+}
+
+#legacy h3 {
+  border: 2px solid black;
+  width: 20%;
+  padding: 1rem 0rem;
+  margin: auto;
 }
 
 /* NAME */
