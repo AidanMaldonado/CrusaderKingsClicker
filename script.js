@@ -49,9 +49,13 @@ const currentKingValue = document.querySelector("#current-king");
 const courtDisplay = document.querySelector("#random-events");
 const familyTreeDiv = document.querySelector(".family-tree");
 const modal = document.querySelector("#modal-1");
+const modalContent = document.querySelector("#modal-content");
+const modalButtons = document.querySelector(".modal-button");
 let mapTileSet = document.querySelectorAll(".map-tile");
+const main = document.querySelector("main");
 
 //Game variables / Starting
+let showModal = false;
 let mapTiles = [];
 let familyTree = [
   {
@@ -151,6 +155,7 @@ function onStart() {
   foodButton.style.visibility = "hidden";
   matsButton.style.visibility = "hidden";
   matsValue.style.visibility = "hidden";
+  main.style.display = "none";
   updateUI();
 }
 
@@ -432,14 +437,30 @@ function nameGrabber() {
   h1.innerHTML = `${kingdomName}`;
   nameDiv.appendChild(h1);
   form.style.display = "none";
+  main.style.display = "block";
 }
 
 //Modal Function/ Desicions
 
-function showModal() {
-  $("#myModal").modal()
-  content.innerHTML
-
+function displayModal() {
+  if (showModal == true) {
+    modal.style.display = block;
+  }
+}
+// Modal Content
+function eventModals() {
+  if (pop >= 2000) {
+    let random = Math.floor(Math.random() * 100 + 1);
+  }
+  if (pop >= 198) {
+    //Grab option buttons
+    let opt1 = document.getElementById("opt1");
+    let opt2 = document.getElementById("opt2");
+    //Event Content
+    modalContent.innerHTML =
+      "A courier is brought into your court by your local gaurd, He comes bearing a message from a nearby kingdom.";
+  }
+}
 //Event listeners
 //Gets name of kingdom
 form.addEventListener("submit", function (event) {
