@@ -48,6 +48,8 @@ const yearValue = document.querySelector("#year");
 const currentKingValue = document.querySelector("#current-king");
 const courtDisplay = document.querySelector("#random-events");
 const familyTreeDiv = document.querySelector(".family-tree");
+const modal = document.querySelector("#modal-1");
+let mapTileSet = document.querySelectorAll(".map-tile");
 
 //Game variables / Starting
 let mapTiles = [];
@@ -166,7 +168,7 @@ function displayOtherResources() {
 
 //Random Event Generator
 function randomEvents() {
-  if (pop <= 500) {
+  if (pop >= 500) {
     let random = Math.floor(Math.random() * 200 + 1);
 
     if (random >= 198) {
@@ -248,17 +250,24 @@ function foodCalculator() {
 function famineCalc() {
   if (food <= 0) {
     pop -= 1;
+    food = 0;
   }
 }
 
 //Stop Rescources from breaching -1
 function defaultCounter() {
-  if (pop >= 0) {
-    pop = Math.floor(pop - 0);
-    popValue.style.color = "white";
-  } else {
-    pop = 0;
+  if (pop <= 50) {
     popValue.style.color = "red";
+  } else if (mats <= 50) {
+    matsValue.style.color = "red";
+  } else if (pop > 50) {
+    popValue.style.color = "white";
+  } else if (mats > 50) {
+    matsValue.style.color = "white";
+  } else if (pop <= 0) {
+    pop = 0;
+  } else if (mats <= 0) {
+    mats = 0;
   }
 }
 
@@ -366,15 +375,54 @@ function kingdomGen() {
   return kingdom;
 }
 
+//Finish generation so that the kingdoms/colors are grouped
 //Map Generation
 function mapGen() {
-  let newTileObj = { color: "blue", faction: kingdomName };
-  let mapTileSet = document.querySelectorAll(".map-tile");
+  let newTileObjInput = { color: "blue", faction: kingdomName };
 
-  mapTileSet[0].style.backgroundColor = newTileObj.color;
+  let colors = [
+    "#27ae60",
+    "#e67e22",
+    "#e74c3c",
+    "#9b59b6",
+    "#1abc9c",
+    "#34495e",
+  ];
+
+  mapTiles.push(newTileObjInput);
+
+  //Generates all kingdoms
+  for (let i = 0; i < mapTileSet.length - 1; i++) {
+    let random = Math.floor(Math.random() * 6);
+    let randomColor = colors[random];
+    let kingdomName = kingdomGen();
+    let newTileGen = { color: randomColor, faction: kingdomName };
+    mapTiles.push(newTileGen);
+  }
   //Return kingdom
-  for (let i = 0; i < mapTileSet.length; i++) {}
-  mapTiles.push(newTileObj);
+  for (let i = 0; i < mapTileSet.length; i++) {
+    mapTileSet[i].style.backgroundColor = mapTiles[i].color;
+    mapTileSet[i].innerHTML = `<h1>${mapTiles[i].faction}</h1>`;
+  }
+
+  //Generates invade buttons after the user enters their kingdom name
+  invadeBtnGen();
+}
+
+//Battle section --------------------------->
+
+//Invade button
+function invadeBtnGen() {
+  for (let i = 0; i < mapTiles.length; i++) {
+    if (mapTiles[i].faction != kingdomName) {
+      let invadeBtn = document.createElement("button");
+      invadeBtn.innerText = "Invade";
+      let negotiateBtn = document.createElement("button");
+      negotiateBtn.innerText = "Negotiate";
+      mapTileSet[i].appendChild(invadeBtn);
+      mapTileSet[i].appendChild(negotiateBtn);
+    }
+  }
 }
 
 //Kingdom name grabber
@@ -385,6 +433,12 @@ function nameGrabber() {
   nameDiv.appendChild(h1);
   form.style.display = "none";
 }
+
+//Modal Function/ Desicions
+
+function showModal() {
+  $("#myModal").modal()
+  content.innerHTML
 
 //Event listeners
 //Gets name of kingdom
@@ -427,6 +481,8 @@ window.setInterval(function () {
   seasonGenerator();
   displayFamilyTree();
   randomEvents();
+  defaultCounter();
+
   updateUI();
 }, 2500);
 
